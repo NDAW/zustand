@@ -87,11 +87,36 @@ function createIIFEConfig(input, output, globalName) {
   }
 }
 
+function createIIFETsLibConfig(input, output, globalName) {
+  return {
+    input,
+    output: {
+      file: output,
+      format: 'iife',
+      exports: 'named',
+      name: globalName,
+      globals: {
+        react: 'React',
+      },
+    },
+    external,
+    plugins: [
+      resolve({ extensions }),
+      typescript({
+        target: 'ES2017',
+        noEmitHelpers: true,
+      }),
+      sizeSnapshot(),
+    ],
+  }
+}
+
 export default [
   createDeclarationConfig('src/index.ts', 'dist'),
   createESMConfig('src/index.ts', 'dist/index.js'),
   createCommonJSConfig('src/index.ts', 'dist/index.cjs.js'),
   createIIFEConfig('src/index.ts', 'dist/index.iife.js', 'zustand'),
+  createIIFETsLibConfig('src/index.ts', 'dist/index.iife.tslib.js', 'zustand'),
   createCommonJSConfig('src/shallow.ts', 'dist/shallow.js'),
   createCommonJSConfig('src/middleware.ts', 'dist/middleware.js'),
   createCommonJSConfig('src/vanilla.ts', 'dist/vanilla.js'),

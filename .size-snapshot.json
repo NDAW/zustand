@@ -76,5 +76,10 @@
     "bundled": 1825,
     "minified": 631,
     "gzipped": 350
+  },
+  "index.iife.tslib.js": {
+    "bundled": 5469,
+    "minified": 1410,
+    "gzipped": 707
   }
 }
