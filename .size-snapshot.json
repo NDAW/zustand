@@ -70,7 +70,7 @@
   "middleware.js": {
     "bundled": 8842,
     "minified": 3928,
-    "gzipped": 1502
+    "gzipped": 1501
   },
   "vanilla.js": {
     "bundled": 1825,
@@ -81,5 +81,20 @@
     "bundled": 5469,
     "minified": 1410,
     "gzipped": 707
+  },
+  "shallow.iife.tslib.js": {
+    "bundled": 871,
+    "minified": 421,
+    "gzipped": 263
+  },
+  "middleware.iife.tslib.js": {
+    "bundled": 5856,
+    "minified": 2180,
+    "gzipped": 1046
+  },
+  "vanilla.iife.tslib.js": {
+    "bundled": 1884,
+    "minified": 529,
+    "gzipped": 339
   }
 }

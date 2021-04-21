@@ -118,6 +118,21 @@ export default [
   createIIFEConfig('src/index.ts', 'dist/index.iife.js', 'zustand'),
   createIIFETsLibConfig('src/index.ts', 'dist/index.iife.tslib.js', 'zustand'),
   createCommonJSConfig('src/shallow.ts', 'dist/shallow.js'),
+  createIIFETsLibConfig(
+    'src/shallow.ts',
+    'dist/shallow.iife.tslib.js',
+    'zustandShallow'
+  ),
   createCommonJSConfig('src/middleware.ts', 'dist/middleware.js'),
+  createIIFETsLibConfig(
+    'src/middleware.ts',
+    'dist/middleware.iife.tslib.js',
+    'zustandMiddleware'
+  ),
   createCommonJSConfig('src/vanilla.ts', 'dist/vanilla.js'),
+  createIIFETsLibConfig(
+    'src/vanilla.ts',
+    'dist/vanilla.iife.tslib.js',
+    'zustandVanilla'
+  ),
 ]
