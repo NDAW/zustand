@@ -95,6 +95,14 @@ function createIIFETsLibConfig(input, output, globalName) {
   }
 }
 
+function uppercaseFirstLetter(str) {
+  if (!str) {
+    return str
+  }
+
+  return str.charAt(0).toUpperCase() + str.slice(1, str.length)
+}
+
 export default function (args) {
   let c = Object.keys(args).find((key) => key.startsWith('config-'))
   if (c) {
@@ -102,15 +110,20 @@ export default function (args) {
     return [
       createCommonJSConfig(`src/${c}.ts`, `dist/${c}.js`),
       createESMConfig(`src/${c}.ts`, `dist/esm/${c}.js`),
+      createIIFETsLibConfig(
+        `src/${c}.ts`,
+        `dist/ts/${c}.iife.tslib.js`,
+        `zustand${uppercaseFirstLetter(c)}`
+      ),
     ]
   }
   return [
-    createDeclarationConfig('src/index.ts', 'dist'),
+    createDeclarationConfig('src/index.ts', 'dist/declarations'),
     createCommonJSConfig('src/index.ts', 'dist/index.js'),
     createESMConfig('src/index.ts', 'dist/esm/index.js'),
     createIIFETsLibConfig(
       'src/index.ts',
-      'dist/index.iife.tslib.js',
+      'dist/ts/index.iife.tslib.js',
       'zustand'
     ),
   ]

@@ -164,5 +164,20 @@
     "bundled": 5684,
     "minified": 1493,
     "gzipped": 759
+  },
+  "shallow.iife.tslib.js": {
+    "bundled": 871,
+    "minified": 421,
+    "gzipped": 263
+  },
+  "vanilla.iife.tslib.js": {
+    "bundled": 1884,
+    "minified": 529,
+    "gzipped": 339
+  },
+  "middleware.iife.tslib.js": {
+    "bundled": 5866,
+    "minified": 2180,
+    "gzipped": 1046
   }
 }
