@@ -28,11 +28,13 @@ export const redux = <S extends State, A extends { type: unknown }>(
   return { dispatch: api.dispatch, ...initial }
 }
 
-type NamedSet<S extends State> = (
-  partial: PartialState<S>,
-  replace?: boolean,
-  name?: string
-) => void
+type NamedSet<T extends State> = {
+  <K extends keyof T>(
+    partial: PartialState<T, K>,
+    replace?: boolean,
+    name?: string
+  ): void
+}
 
 export const devtools = <S extends State>(
   fn: (set: NamedSet<S>, get: GetState<S>, api: StoreApi<S>) => S,
@@ -68,7 +70,10 @@ export const devtools = <S extends State>(
   const initialState = fn(namedSet, get, api)
   if (!api.devtools) {
     const savedSetState = api.setState
-    api.setState = (state: PartialState<S>, replace?: boolean) => {
+    api.setState = <K extends keyof S>(
+      state: PartialState<S, K>,
+      replace?: boolean
+    ) => {
       savedSetState(state, replace)
       api.devtools.send(api.devtools.prefix + 'setState', api.getState())
     }
@@ -146,7 +151,7 @@ type PersistOptions<S> = {
    * @param str The storage's current value.
    * @default JSON.parse
    */
-  deserialize?: (str: string) => StorageValue<S> | Promise<S>
+  deserialize?: (str: string) => StorageValue<S> | Promise<StorageValue<S>>
   /**
    * Prevent some items from being stored.
    */
@@ -158,7 +163,7 @@ type PersistOptions<S> = {
   /**
    * A function returning another (optional) function.
    * The main function will be called before the state rehydration.
-   * The returned function will be called after the state rehydration or when an error occured.
+   * The returned function will be called after the state rehydration or when an error occurred.
    */
   onRehydrateStorage?: (state: S) => ((state?: S, error?: Error) => void) | void
   /**
@@ -229,7 +234,7 @@ export const persist = <S extends State>(
 
   api.setState = (state, replace) => {
     savedSetState(state, replace)
-    setItem()
+    void setItem()
   }
 
   // rehydrate initial state with existing stored state
@@ -267,7 +272,7 @@ export const persist = <S extends State>(
   return config(
     (...args) => {
       set(...args)
-      setItem()
+      void setItem()
     },
     get,
     api

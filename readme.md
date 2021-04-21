@@ -76,7 +76,16 @@ const nuts = useStore(state => state.nuts)
 const honey = useStore(state => state.honey)
 ```
 
-If you want to construct a single object with multiple state-picks inside, similar to redux's mapStateToProps, you can tell zustand that you want the object to be diffed shallowly by passing an alternative equality function.
+For more control over re-rendering, you may provide an alternative equality function on the second argument.
+
+```jsx
+const treats = useStore(
+  state => state.treats,
+  (oldTreats, newTreats) => compare(oldTreats, newTreats)
+)
+```
+
+For instance, if you want to construct a single object with multiple state-picks inside, similar to redux's mapStateToProps, you can tell zustand that you want the object to be diffed shallowly by passing the `shallow` equality function.
 
 ```jsx
 import shallow from 'zustand/shallow'
@@ -301,17 +310,24 @@ For a TS example see the following [discussion](https://github.com/pmndrs/zustan
 import { State, StateCreator } from 'zustand'
 import produce, { Draft } from 'immer'
 
+// Immer V8 or lower
 const immer = <T extends State>(
   config: StateCreator<T, (fn: (draft: Draft<T>) => void) => void>
 ): StateCreator<T> => (set, get, api) =>
   config((fn) => set(produce(fn) as (state: T) => T), get, api)
+
+// Immer V9
+const immer = <T extends State>(
+  config: StateCreator<T, (fn: (draft: Draft<T>) => void) => void>
+): StateCreator<T> => (set, get, api) =>
+  config((fn) => set(produce<T>(fn)), get, api)
 ```
 
 </details>
 
 ## Persist middleware
 
-You can persist you store's data using any kind of storage.
+You can persist your store's data using any kind of storage.
 
 ```jsx
 import create from "zustand"
@@ -392,6 +408,7 @@ const useStore = create(devtools(redux(reducer, initialState)))
 ```
 
 devtools takes the store function as its first argument, optionally you can name the store with a second argument: `devtools(store, "MyStore")`, which will be prefixed to your actions.
+devtools will only log actions from each separated store unlike in a typical *combined reducers* redux store. See an approach to combining stores https://github.com/pmndrs/zustand/issues/163
 
 ## TypeScript
 
@@ -434,3 +451,7 @@ const useStore = create(
 ## Testing
 
 For information regarding testing with Zustand, visit the dedicated [Wiki page](https://github.com/pmndrs/zustand/wiki/Testing).
+
+## 3rd-Party Libraries
+
+Some users may want to extends Zustand's feature set which can be done using 3rd-party libraries made by the community. For information regarding 3rd-party libraries with Zustand, visit the dedicated [Wiki page](https://github.com/pmndrs/zustand/wiki/3rd-Party-Libraries).
